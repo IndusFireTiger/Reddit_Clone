@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-new Vue({
+let vueInstance = new Vue({
   el: '#app',
   render: h => h(App)
 })
+
+console.log(App)
+console.log(vueInstance)
