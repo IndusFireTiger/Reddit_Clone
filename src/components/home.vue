@@ -1,7 +1,8 @@
 <template>
   <div id = "homeMenu">
-    <p>Home Menu</p>
-      <!-- <div v-for="op in data.options" v-bind:options.name>{{op}}</div> -->
+    <div class="grid-container home-menu">
+      <div v-for = 'op in options' :key="op" :class="[op]">{{op}}</div>
+    </div>
   </div>
 </template>
 
@@ -11,21 +12,18 @@ export default {
   // prop: [data],
   data() {
     return {
-      options: [
-        {
-          name: "aside"
-        },
-        {
-          name: "logo"
-        },
-        {
-          name: "title"
-        },
-        {
-          name: "popular"
-        }
-      ]
+      options: ["logo", "readit", "popular", "search", "login", "signup"]
     };
   }
 };
 </script>
+
+<style>
+#homeMenu {
+  height: 50px;
+  text-align: center;
+  padding: 10px;
+  background-color: #21503B;
+}
+</style>
+

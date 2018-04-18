@@ -1,6 +1,8 @@
 <template>
   <div id="navbar">
-    <div>Navigation Bar</div>
+    <div class="grid-container navbar">
+      <div v-for = 'op in options' :key="op" :class="[op]">{{op}}</div>
+    </div>
   </div>
 </template>
 
@@ -16,5 +18,11 @@ export default {
 </script>
 
 <style>
-
+#navbar {
+  height: 50px;
+  text-align: center;
+  padding: 10px;
+  background-color: #c6464a;
+}
 </style>
+

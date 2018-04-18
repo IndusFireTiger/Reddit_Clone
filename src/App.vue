@@ -19,5 +19,8 @@ export default {
 </script>
 
 <style>
-
+body{
+  font-family: Comic Sans MS;
+  margin: 0;
+}
 </style>
