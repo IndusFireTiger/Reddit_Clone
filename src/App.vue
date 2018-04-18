@@ -19,10 +19,5 @@ export default {
 </script>
 
 <style>
-.post-div {
-  border-color: black;
-  border: solid;
-  padding: 5px;
-  margin: 10px;
-}
+
 </style>
