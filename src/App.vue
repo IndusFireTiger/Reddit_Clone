@@ -1,11 +1,7 @@
 <template>
-  <div id="posts">
+  <div id="poster">
     <homeMenu></homeMenu>
     <navbar></navbar>
-    <post></post>
-    <post></post>
-    <post></post>
-    <post></post>
     <post></post>
   </div>
 </template>
@@ -16,9 +12,10 @@ import post from "./components/post";
 import navbar from "./components/navbar";
 import homeMenu from "./components/home";
 
-new Vue({
-  el: "posts"
-});
+export default {
+  name: "poster",
+  components: {homeMenu, navbar, post}
+}
 </script>
 
 <style>

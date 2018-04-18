@@ -1,18 +1,18 @@
 <template>
   <div id="navbar">
+    <div>Navigation Bar</div>
   </div>
 </template>
 
 <script>
-import Vue from 'vue'
-Vue.component("navbar", {
-  template: '<p>nav</p>',
+export default {
+  name: "navbar",
   data(){
       return {
           options: ['mode','subreddits']
       }
   }
-})
+}
 </script>
 
 <style>
