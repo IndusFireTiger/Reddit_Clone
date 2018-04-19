@@ -23,7 +23,7 @@ export default {
   height: 50px;
   text-align: center;
   padding: 10px;
-  background-color: #21503B;
+  background-color: #80DEEA;
 }
 </style>
 

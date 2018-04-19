@@ -2,7 +2,10 @@
   <div id="poster">
     <homeMenu></homeMenu>
     <navbar></navbar>
-    <post></post>
+    <div class='container'>
+      <post id=post-div></post>
+      <side id=side-div></side>
+    </div>
   </div>
 </template>
 
@@ -11,16 +14,29 @@ import Vue from "vue";
 import post from "./components/post";
 import navbar from "./components/navbar";
 import homeMenu from "./components/home";
+import side from "./components/side";
 
 export default {
   name: "poster",
-  components: {homeMenu, navbar, post}
+  components: {homeMenu, navbar, post, side}
 }
 </script>
 
 <style>
 body{
-  font-family: Comic Sans MS;
+  font-family: IBMPlexSans, sans-serif;
   margin: 0;
+}
+#post-div{
+  /* float: left; */
+  grid-area: 'post-div'
+}
+#side-div{
+  /* float: right; */
+  grid-area: 'side-div'
+}
+.container{
+  display: grid;
+  grid-template: 'post-div side-div'
 }
 </style>

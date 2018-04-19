@@ -22,7 +22,7 @@ export default {
   height: 50px;
   text-align: center;
   padding: 10px;
-  background-color: #c6464a;
+  background-color: #B2EBF2;
 }
 </style>
 

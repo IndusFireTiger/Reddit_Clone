@@ -2,19 +2,15 @@
   <div id="posts">
     <div class = post v-for = 'p in posts' v-bind:key = p.id> 
       <div class="grid-container posts">
-      <div class="item1"><h3>{{p.title}}</h3></div>
-      <div class="vote up"><p>{{p.ups}}</p></div>
-      <div class="vote votes"><p>Votes</p></div>
-      <div class="vote down"><p>{{p.downs}}</p></div>
-      <div class="item2">
-        <img v-bind:src="p.thumbnail" alt="">
-        </div>
-      <div class="item3"><p>{{p.subreddit}}</p></div>  
-      <div class="item4"><p>Posted by {{p.author}}</p></div>
-      <!-- <div class="item5">Time</div> -->
-      <div class="comment item6"><p>Comment</p></div> 
-      <div class="share item7"><p>Share</p></div>
-    </div>
+        <div class="item1"><h4>{{p.title}}</h4></div>
+        <div class="vote up"><p>{{p.ups}}</p></div>
+        <div class="vote votes"><p>Votes</p></div>
+        <div class="vote down"><p>{{p.downs}}</p></div>
+        <div class="item2"><img v-bind:src="p.thumbnail" alt=""></div>
+        <div class="link"><p>{{p.subreddit}}  Posted by {{p.author}}</p></div>
+        <!-- <div class="item5">Time</div> -->
+        <div class="comment"><p>Comment Share</p></div>  
+      </div>
     </div>    
   </div>
 </template>
@@ -61,41 +57,71 @@ export default {
 
 <style>
 .post {
-  background-color: #A9D1B7;
-  border-color: rgb(212, 210, 210);
-  border: solid;
-  border-bottom-style: groove;
-  /* padding: 5px; */
-  /* margin: 10px; */
+  background-color: rgb(247, 251, 252);
+  margin: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
 }
 
-.item1 { grid-area: title-div; }
-.up { grid-area: up; }
-.votes { grid-area: vote-div; }
-.down { grid-area: down; }
-.item2 { grid-area: thumnail; }
-.item3 { grid-area: link-div; }
-.item4 { grid-area: user; }
-.item5 { grid-area: time; }
-.item6 { grid-area: comment; }
-.item7 { grid-area: share; }
+.item1 {
+  grid-area: title-div;
+}
+.up {
+  grid-area: up;
+}
+.votes {
+  grid-area: vote-div;
+}
+.down {
+  grid-area: down;
+}
+.item2 {
+  grid-area: thumbnail;  
+  /* grid-auto-columns: min-content; */
+  max-width: 100px;
+  max-height: 100px;
+}
+.link {
+  grid-area: link;
+}
+.item4 {
+  grid-area: user;
+}
+.item5 {
+  grid-area: time;
+}
+.comment {
+  grid-area: comment;
+}
+.item7 {
+  grid-area: share;
+}
 
 .grid-container {
   display: grid;
   grid-template:
-    'up title-div title-div title-div title-div title-div title-div title-div thumnail'
-    'vote-div link-div link-div user user time . . thumnail'
-    'down comment share . . . . . thumnail';
-  grid-gap: 1px;
+    "thumbnail title-div title-div title-div . up"
+    "thumbnail link . . . vote-div"
+    "thumbnail comment . . . down";
+  /* grid-gap: 1px; */
+  
+  /* grid-template-columns: 100px auto auto auto auto 100px;
+  grid-template-rows: 100px auto auto; */
 }
-.posts>div {
-  background-color: rgba(255, 255, 255, 0.8);
-  /* margin: 5px; */
+.posts * {
+  margin: 0;
+  padding-left: 5px;
+  padding-top: 5px;
 }
-#posts{
+.vote {
+  text-align: center;
+}
+img {
+  width: 80px;
+  height: 80px;
+  border-radius: 2px;
+}
+/* h4{
   margin:0;
-}
-.vote{
-  text-align: center
-}
+  padding-left: 5px
+} */
 </style>
