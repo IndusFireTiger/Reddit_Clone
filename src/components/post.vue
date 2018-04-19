@@ -1,33 +1,36 @@
 <template>
   <div id="posts">
     <div class = post v-for = 'p in posts' v-bind:key = p.id> 
-      <div class='flex-container'>
+      <div class='flex-container'>        
         <div class="left-div">
           <div class="vote">
-            <a href="#">up</a>
+            <a v-on:click="voteUp()" href="#">up</a>
+          </div>
+          <div v-if="p.votes > 1000" class="vote">
+            <p> {{ Math.floor(p.votes/1000) + 'k+'}}</p>
+          </div>
+          <div v-else class="vote">
+            <p> {{p.votes/1000}}</p>
           </div>
           <div class="vote">
-            <p>{{p.ups - p.downs}}</p>
+            <a v-on:click="voteDown()" href="#">down</a>
           </div>
-          <div class="vote">
-            <a href="#">down</a>
-          </div>
-        </div> 
-        <div class="img-div">
-          <img v-bind:src="p.thumbnail" alt="">
+        </div>
+        <div>
+          <img id="thumbnail" v-bind:src="p.thumbnail" alt="">
         </div>
         <div class="right-div">
           <div class="item1">
-            <a class="title" :href="p.comment_link">{{p.title}}</a>
+            <a class="title" :href="p.permalink">{{p.title}}</a>
             <a :href="p.url">{{p.url.substring(p.url.indexOf('//')+2,40)+"..."}}</a>            
           </div>
           <div class="link">            
-              <a :href="p.subreddit">{{p.subreddit}}</a>  
+              <a :href="p.subreddit_name_prefixed">{{p.subreddit_name_prefixed}}</a>  
               <span class='by'>Posted by</span> 
               <a :href="p.author">{{p.author}}</a>            
           </div>
           <div class="comment">
-            <a :href="p.comment_link">Comment</a>
+            <a :href="p.permalink">Comment</a>
             </div> 
         </div>        
       </div>
@@ -49,7 +52,14 @@ export default {
   created: function() {
     this.fetchData();
   },
+  computed: {},
   methods: {
+    voteUp: function() {
+      console.log("vote up");
+    },
+    voteDown: function() {
+      console.log("vote down");
+    },
     fetchData: function() {
       let url = "https://www.reddit.com/.json";
       fetch(url)
@@ -57,22 +67,12 @@ export default {
         .then(res => {
           let redditHomeData = res.data.children;
           redditHomeData.forEach(obj => {
-            let post = {
-              id: obj.data.subreddit_id,
-              title: obj.data.title,
-              url: obj.data.url,
-              author: 'u/'+obj.data.author,
-              ups: obj.data.ups,
-              downs: obj.data.downs,
-              thumbnail: obj.data.thumbnail,
-              subreddit: obj.data.subreddit_name_prefixed,
-              comment_link: obj.data.permalink
-            };
-            if(!post.thumbnail.startsWith('http')){
-              post.thumbnail = '../assests/img.jpg'
+            let post = obj.data            
+            if (!post.thumbnail.startsWith("http")) {
+              post.thumbnail = "../assests/img.jpg";
             }
-            console.log(post.ups-post.downs)
-            // console.log(post.downs)
+            post.author = "u/" + post.author;
+            post.votes = post.ups - post.downs;
             this.posts.push(post);
           });
         });
@@ -96,47 +96,47 @@ export default {
 .vote {
   text-align: center;
 }
-img {
+#thumbnail {
   width: 80px;
   height: 80px;
   border-radius: 30%;
-  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);
+  padding: 0;
 }
-img:hover {
-  box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.4);
+#thumbnail:hover {
+  box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.3);
 }
 .flex-container {
   display: flex;
   margin-top: 10px;
   clear: both;
 }
-.right-div{
+.right-div {
   float: right;
-  /* background: rgb(170, 239, 248); */
 }
-.left-div{
+.left-div {
   float: left;
   /* background: rgb(170, 239, 248); */
 }
-p{  
+p {
   margin: 0;
-  padding:0;
+  padding: 0;
   font-size: 14px;
 }
-a{
-  font-size: 12px; 
+a {
+  font-size: 12px;
   font-weight: normal;
   color: initial;
   text-decoration: none;
 }
-a:hover{
-  color:rgb(0, 119, 255);
+a:hover {
+  color: rgb(0, 119, 255);
 }
-.by{
-  font-size: 12px; 
+.by {
+  font-size: 12px;
   padding: 0;
 }
-.title{
+.title {
   font-size: 14px;
   /* font-weight: bold; */
 }
