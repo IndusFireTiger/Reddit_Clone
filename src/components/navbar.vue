@@ -11,7 +11,7 @@ export default {
   name: "navbar",
   data(){
       return {
-          options: ['mode','subreddits']
+          options: ['mode','subreddits', 'search']
       }
   }
 }
@@ -19,10 +19,10 @@ export default {
 
 <style>
 #navbar {
-  height: 50px;
+  height: 20px;
   text-align: center;
   padding: 10px;
-  background-color: #B2EBF2;
+  background-color: rgb(219, 255, 255);
 }
 </style>
 

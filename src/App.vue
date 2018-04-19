@@ -28,15 +28,17 @@ body{
   margin: 0;
 }
 #post-div{
-  /* float: left; */
-  grid-area: 'post-div'
+  float: left;
+  /* grid-area: 'post-div'; */
 }
 #side-div{
-  /* float: right; */
-  grid-area: 'side-div'
+  float: right;
+  /* grid-area: 'side-div'; */
 }
 .container{
   display: grid;
-  grid-template: 'post-div side-div'
+  grid-template: 'post-div side-div';
+  grid-template-columns: '500px 200px';
+  padding:5px;
 }
 </style>

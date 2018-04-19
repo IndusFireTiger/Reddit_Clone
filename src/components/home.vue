@@ -12,7 +12,7 @@ export default {
   // prop: [data],
   data() {
     return {
-      options: ["logo", "readit", "popular", "search", "login", "signup"]
+      options: ["logo", "readit", "login", "signup"]
     };
   }
 };
@@ -20,10 +20,15 @@ export default {
 
 <style>
 #homeMenu {
-  height: 50px;
+  height: 30px;
   text-align: center;
   padding: 10px;
-  background-color: #80DEEA;
+  background-color: rgb(93, 250, 250);
+}
+.grid-container {
+  display: grid;
+  grid-template:
+    ". . . . . .";
 }
 </style>
 

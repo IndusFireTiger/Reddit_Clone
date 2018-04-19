@@ -1,15 +1,35 @@
 <template>
   <div id="posts">
     <div class = post v-for = 'p in posts' v-bind:key = p.id> 
-      <div class="grid-container posts">
-        <div class="item1"><h4>{{p.title}}</h4></div>
-        <div class="vote up"><p>{{p.ups}}</p></div>
-        <div class="vote votes"><p>Votes</p></div>
-        <div class="vote down"><p>{{p.downs}}</p></div>
-        <div class="item2"><img v-bind:src="p.thumbnail" alt=""></div>
-        <div class="link"><p>{{p.subreddit}}  Posted by {{p.author}}</p></div>
-        <!-- <div class="item5">Time</div> -->
-        <div class="comment"><p>Comment Share</p></div>  
+      <div class='flex-container'>
+        <div class="left-div">
+          <div class="vote">
+            <a href="#">up</a>
+          </div>
+          <div class="vote">
+            <p>{{p.ups - p.downs}}</p>
+          </div>
+          <div class="vote">
+            <a href="#">down</a>
+          </div>
+        </div> 
+        <div class="img-div">
+          <img v-bind:src="p.thumbnail" alt="">
+        </div>
+        <div class="right-div">
+          <div class="item1">
+            <a class="title" :href="p.comment_link">{{p.title}}</a>
+            <a :href="p.url">{{p.url.substring(p.url.indexOf('//')+2,40)+"..."}}</a>            
+          </div>
+          <div class="link">            
+              <a :href="p.subreddit">{{p.subreddit}}</a>  
+              <span class='by'>Posted by</span> 
+              <a :href="p.author">{{p.author}}</a>            
+          </div>
+          <div class="comment">
+            <a :href="p.comment_link">Comment</a>
+            </div> 
+        </div>        
       </div>
     </div>    
   </div>
@@ -41,12 +61,18 @@ export default {
               id: obj.data.subreddit_id,
               title: obj.data.title,
               url: obj.data.url,
-              author: obj.data.author,
+              author: 'u/'+obj.data.author,
               ups: obj.data.ups,
               downs: obj.data.downs,
               thumbnail: obj.data.thumbnail,
-              subreddit: obj.data.subreddit_name_prefixed
+              subreddit: obj.data.subreddit_name_prefixed,
+              comment_link: obj.data.permalink
             };
+            if(!post.thumbnail.startsWith('http')){
+              post.thumbnail = '../assests/img.jpg'
+            }
+            console.log(post.ups-post.downs)
+            // console.log(post.downs)
             this.posts.push(post);
           });
         });
@@ -56,61 +82,16 @@ export default {
 </script>
 
 <style>
-.post {
-  background-color: rgb(247, 251, 252);
-  margin: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
+.post:hover {
+  background: linear-gradient(to bottom right, white, rgb(193, 245, 252));
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
-.item1 {
-  grid-area: title-div;
-}
-.up {
-  grid-area: up;
-}
-.votes {
-  grid-area: vote-div;
-}
-.down {
-  grid-area: down;
-}
-.item2 {
-  grid-area: thumbnail;  
-  /* grid-auto-columns: min-content; */
-  max-width: 100px;
-  max-height: 100px;
-}
-.link {
-  grid-area: link;
-}
-.item4 {
-  grid-area: user;
-}
-.item5 {
-  grid-area: time;
-}
-.comment {
-  grid-area: comment;
-}
-.item7 {
-  grid-area: share;
-}
-
-.grid-container {
-  display: grid;
-  grid-template:
-    "thumbnail title-div title-div title-div . up"
-    "thumbnail link . . . vote-div"
-    "thumbnail comment . . . down";
-  /* grid-gap: 1px; */
-  
-  /* grid-template-columns: 100px auto auto auto auto 100px;
-  grid-template-rows: 100px auto auto; */
-}
-.posts * {
+.post * {
   margin: 0;
   padding-left: 5px;
-  padding-top: 5px;
+  padding-right: 5px;
+  padding-top: 3px;
 }
 .vote {
   text-align: center;
@@ -118,10 +99,45 @@ export default {
 img {
   width: 80px;
   height: 80px;
-  border-radius: 2px;
+  border-radius: 30%;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.2);
 }
-/* h4{
-  margin:0;
-  padding-left: 5px
-} */
+img:hover {
+  box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.4);
+}
+.flex-container {
+  display: flex;
+  margin-top: 10px;
+  clear: both;
+}
+.right-div{
+  float: right;
+  /* background: rgb(170, 239, 248); */
+}
+.left-div{
+  float: left;
+  /* background: rgb(170, 239, 248); */
+}
+p{  
+  margin: 0;
+  padding:0;
+  font-size: 14px;
+}
+a{
+  font-size: 12px; 
+  font-weight: normal;
+  color: initial;
+  text-decoration: none;
+}
+a:hover{
+  color:rgb(0, 119, 255);
+}
+.by{
+  font-size: 12px; 
+  padding: 0;
+}
+.title{
+  font-size: 14px;
+  /* font-weight: bold; */
+}
 </style>

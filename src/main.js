@@ -5,6 +5,3 @@ let vueInstance = new Vue({
   el: '#app',
   render: h => h(App)
 })
-
-console.log(App)
-console.log(vueInstance)
