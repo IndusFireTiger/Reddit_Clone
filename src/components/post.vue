@@ -73,6 +73,7 @@ export default {
             }
             post.author = "u/" + post.author;
             post.votes = post.ups - post.downs;
+            post.permalink = "https://www.reddit.com"+post.permalink
             this.posts.push(post);
           });
         });
@@ -86,7 +87,6 @@ export default {
   background: linear-gradient(to bottom right, white, rgb(193, 245, 252));
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 }
-
 .post * {
   margin: 0;
   padding-left: 5px;
@@ -99,7 +99,7 @@ export default {
 #thumbnail {
   width: 80px;
   height: 80px;
-  border-radius: 30%;
+  border-radius: 7%;
   box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);
   padding: 0;
 }
@@ -116,7 +116,6 @@ export default {
 }
 .left-div {
   float: left;
-  /* background: rgb(170, 239, 248); */
 }
 p {
   margin: 0;
@@ -138,6 +137,5 @@ a:hover {
 }
 .title {
   font-size: 14px;
-  /* font-weight: bold; */
 }
 </style>

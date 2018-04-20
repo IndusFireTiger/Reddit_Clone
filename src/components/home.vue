@@ -23,7 +23,8 @@ export default {
   height: 30px;
   text-align: center;
   padding: 10px;
-  background-color: rgb(93, 250, 250);
+  /* background-color: rgb(93, 250, 250); */
+  background-color: white;
 }
 .grid-container {
   display: grid;
