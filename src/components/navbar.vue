@@ -1,10 +1,10 @@
 <template>
   <div id="navbar">
-      <div class="subreddits" v-on:click="subredMenu"> Subreddit
-        <!-- <a href="">subreddits</a>    -->
-        <!-- <div class="vertical-menu">
-          <a v-for="s in subreddits" :key="s" href="">{{s}}</a>
-        </div>      -->
+      <div class="menu" v-on:click="subredMenu"> Subreddit
+          <div class="menu-content">
+          <!-- <a v-for="category in subreddits" :key="category" :href="category.toLowerCase()">{{category}}</a> -->
+          <router-link v-for="cat in subreddits" :key="cat" :to="cat">{{cat}}</router-link>
+          </div>   
       </div>
       <div class="search">
         <input type="text" placeholder="Search">
@@ -24,6 +24,7 @@ export default {
   methods: {
     subredMenu: function () {
       console.log('clicked')
+      console.log('this.$route',this.$route)
     }
   }
 }
@@ -53,6 +54,7 @@ export default {
 .search{
   float: right;
   color: white;
+  /* position: relative; */
 }
 .search input{
   border:none;
@@ -64,22 +66,53 @@ export default {
 input:focus{
   outline:none; 
 }
-.vertical-menu {
+.menu {
     width: 100px;
     text-align: left;
-    /* display: hidden; */
+    /* display: none; */
+    float: left;
+}
+.menu:hover {
+  display: block;
+  cursor: pointer;
+}
+.menu a {
+  background-color: rgb(93, 250, 250);
+  color: black;
+  display: block;
+  padding: 12px;
+  text-decoration: none;  
 }
 
-.vertical-menu a {
-    background-color: rgb(93, 250, 250);
+.menu a:hover {
+  background-color: white;
+  cursor: pointer;
+}
+
+.menu-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.menu-content a {
+    float: none;
     color: black;
-    display: block;
-    padding: 12px;
+    padding: 12px 16px;
     text-decoration: none;
+    display: block;
+    text-align: left;
 }
 
-.vertical-menu a:hover {
-    background-color: white;
+.menu-content a:hover {
+    background-color: #ddd;
+}
+
+.menu:hover .menu-content {
+    display: block;
 }
 </style>
 

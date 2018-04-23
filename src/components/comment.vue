@@ -8,16 +8,11 @@
 <script>
 export default {
   name: 'comment',
-  // props: [
-  //   'user',
-  //   'created',
-  //   'content'
-  // ],
   data() {
     return {
-      user: 'ramu kaka',
-      created: '2 days ago',
-      content: 'chai banaoon'
+      user: '',
+      created: '',
+      content: ''
     }
   }
 }
