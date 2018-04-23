@@ -1,7 +1,7 @@
 <template>
   <div id = "side">
     <div>
-      <div v-for = 'op in options' :key="op" class='side-sub-div'></div>
+      <div v-for = 'op in options' :key="op" class='side-sub-div'>{{op}}</div>
     </div>
   </div>
 </template>
@@ -11,7 +11,7 @@ export default {
   name: "side",
   data() {
     return {
-      options: ['create', 'trending', 'ads', 'about']
+      options: ['card focused post', 'create post', 'trending r/', 'about']
     };
   }
 };

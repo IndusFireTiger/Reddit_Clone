@@ -7,10 +7,10 @@
             <a v-on:click="voteUp()" href="#">up</a>
           </div>
           <div v-if="p.votes > 1000" class="vote">
-            <p> {{ Math.floor(p.votes/1000) + 'k+'}}</p>
+            <p> {{shortenVotes(p.votes)}}</p>
           </div>
           <div v-else class="vote">
-            <p> {{p.votes/1000}}</p>
+            <p> {{p.votes}}</p>
           </div>
           <div class="vote">
             <a v-on:click="voteDown()" href="#">down</a>
@@ -20,9 +20,9 @@
           <img id="thumbnail" v-bind:src="p.thumbnail" alt="">
         </div>
         <div class="right-div">
-          <div class="item1">
+          <div>
             <a class="title" :href="p.permalink">{{p.title}}</a>
-            <a :href="p.url">{{p.url.substring(p.url.indexOf('//')+2,40)+"..."}}</a>            
+            <a :href="p.url">{{shortenURL(p.url)}}</a>            
           </div>
           <div class="link">            
               <a :href="p.subreddit_name_prefixed">{{p.subreddit_name_prefixed}}</a>  
@@ -46,25 +46,44 @@ export default {
   components: { comment },
   data() {
     return {
-      posts: []
+      posts: [],
+      eop: 0,
+      onscroll : function(ev) {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {  
+          this.eop = 1
+          console.log('EOP reached', this.eop)          
+        }
+      }
     };
   },
   created: function() {
     this.fetchData();
+    window.onscroll = this.onscroll
+    console.log('window updated')
   },
-  computed: {},
   methods: {
-    voteUp: function() {
+    shortenVotes: function (v) {
+      return Math.floor(v/1000) + 'k+'
+    },
+    shortenURL: function (link) {
+      return link.substring(link.indexOf('//')+2,40) + "..."
+    },
+    voteUp: function () {
       console.log("vote up");
     },
-    voteDown: function() {
+    voteDown: function () {
       console.log("vote down");
     },
-    fetchData: function() {
+    appendItems: function () {
+      //load more items
+      console.log('appending items')
+    },
+    fetchData: function () {
       let url = "https://www.reddit.com/.json";
       fetch(url)
         .then(res => res.json())
         .then(res => {
+          let after = res.data.after
           let redditHomeData = res.data.children;
           redditHomeData.forEach(obj => {
             let post = obj.data            
@@ -76,9 +95,17 @@ export default {
             post.permalink = "https://www.reddit.com"+post.permalink
             this.posts.push(post);
           });
+          console.log('after:',after)
         });
     }
+  },
+  watch: {
+    eop: function (v) {
+      console.log('eop changed:', this.eop)
+      this.eop = false
+    }
   }
+  
 };
 </script>
 
