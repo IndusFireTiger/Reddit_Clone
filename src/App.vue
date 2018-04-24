@@ -2,9 +2,6 @@
   <div id="poster">
     <homeMenu></homeMenu>
     <navbar></navbar>
-    <!-- <p>subred {{$route.params.subred_id}}</p>
-    <p>user {{$route.params.user_id}}</p>
-    <p>cat {{$route.params.cat_id}}</p> -->
     <comment></comment>
     <div class='container'>
       <post id=post-div></post>
