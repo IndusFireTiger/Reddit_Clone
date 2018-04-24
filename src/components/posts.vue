@@ -1,54 +1,21 @@
 <template>
-  <div id="post">
-    <comment></comment>
-    <div>
-      <div class = post v-for = 'p in posts' v-bind:key = p.id> 
-          <div class='flex-container'>        
-            <div class="left-div">
-              <div class="vote">
-                <a v-on:click="voteUp()" href="#">up</a>
-              </div>
-              <div v-if="p.votes > 1000" class="vote">
-                <p> {{shortenVotes(p.votes)}}</p>
-              </div>
-              <div v-else class="vote">
-                <p> {{p.votes}}</p>
-              </div>
-              <div class="vote">
-                <a v-on:click="voteDown()" href="#">down</a>
-              </div>
-            </div>
-            <div>
-              <img id="thumbnail" v-bind:src="p.thumbnail" alt="">
-            </div>
-            <div class="right-div">
-              <div>
-                <a class="title" :href="p.permalink">{{p.title}}</a>
-                <a :href="p.url">{{shortenURL(p.url)}}</a>            
-              </div>
-              <div class="link">            
-                  <a :href="p.subreddit_name_prefixed">{{p.subreddit_name_prefixed}}</a>  
-                  <span class='by'>Posted by</span> 
-                  <a :href="p.author">{{p.author}}</a>            
-              </div>
-              <div class="comment">
-                <a :href="p.permalink">Comment</a>
-                </div> 
-            </div>        
-          </div>
-        </div>
-    </div>
+  <div id="posts">    
+    <div class=container>
+      <post id=post-div></post>
+      <side id=side-div></side> 
+      </div>
   </div>
 </template>
 
 <script>
 // import comment from "./Comment";
-// import side from "./side";
+import side from "./side";
 import comment from "./comment";
+import post from "./post";
 
 export default {
-  name: "post",
-  components: { comment },
+  name: "posts",
+  components: { comment, side, post },
   data() {
     return {
       posts: [],
