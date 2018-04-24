@@ -1,111 +1,118 @@
 <template>
-  <div id="posts">
-    <div class = post v-for = 'p in posts' v-bind:key = p.id> 
-      <div class='flex-container'>        
-        <div class="left-div">
-          <div class="vote">
-            <a v-on:click="voteUp()" href="#">up</a>
+  <div id="posts">    
+    <div class=container>
+      <div id=post-div>
+        <comment></comment>
+        <div class = post v-for = 'p in posts' v-bind:key = p.id> 
+          <div class='flex-container'>        
+            <div class="left-div">
+              <div class="vote">
+                <a v-on:click="voteUp()" href="#">up</a>
+              </div>
+              <div v-if="p.votes > 1000" class="vote">
+                <p> {{shortenVotes(p.votes)}}</p>
+              </div>
+              <div v-else class="vote">
+                <p> {{p.votes}}</p>
+              </div>
+              <div class="vote">
+                <a v-on:click="voteDown()" href="#">down</a>
+              </div>
+            </div>
+            <div>
+              <img id="thumbnail" v-bind:src="p.thumbnail" alt="">
+            </div>
+            <div class="right-div">
+              <div>
+                <a class="title" :href="p.permalink">{{p.title}}</a>
+                <a :href="p.url">{{shortenURL(p.url)}}</a>            
+              </div>
+              <div class="link">            
+                  <a :href="p.subreddit_name_prefixed">{{p.subreddit_name_prefixed}}</a>  
+                  <span class='by'>Posted by</span> 
+                  <a :href="p.author">{{p.author}}</a>            
+              </div>
+              <div class="comment">
+                <a :href="p.permalink">Comment</a>
+                </div> 
+            </div>        
           </div>
-          <div v-if="p.votes > 1000" class="vote">
-            <p> {{shortenVotes(p.votes)}}</p>
-          </div>
-          <div v-else class="vote">
-            <p> {{p.votes}}</p>
-          </div>
-          <div class="vote">
-            <a v-on:click="voteDown()" href="#">down</a>
-          </div>
-        </div>
-        <div>
-          <img id="thumbnail" v-bind:src="p.thumbnail" alt="">
-        </div>
-        <div class="right-div">
-          <div>
-            <a class="title" :href="p.permalink">{{p.title}}</a>
-            <a :href="p.url">{{shortenURL(p.url)}}</a>            
-          </div>
-          <div class="link">            
-              <a :href="p.subreddit_name_prefixed">{{p.subreddit_name_prefixed}}</a>  
-              <span class='by'>Posted by</span> 
-              <a :href="p.author">{{p.author}}</a>            
-          </div>
-          <div class="comment">
-            <a :href="p.permalink">Comment</a>
-            </div> 
-        </div>        
+        </div>   
       </div>
-    </div>    
+      <side id=side-div></side> 
+      </div>
   </div>
 </template>
 
 <script>
-import comment from "./Comment";
+// import comment from "./Comment";
+import side from "./side";
+import comment from "./comment"
 
 export default {
   name: "post",
-  components: { comment },
+  components: { comment, side },
   data() {
     return {
       posts: [],
       eop: 0,
-      onscroll : function(ev) {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {  
-          this.eop = 1
-          console.log('EOP reached', this.eop)          
+      onscroll: function(ev) {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+          this.eop = 1;
+          console.log("EOP reached", this.eop);
         }
       }
     };
   },
   created: function() {
     this.fetchData();
-    window.onscroll = this.onscroll
-    console.log('window updated')
+    window.onscroll = this.onscroll;
+    console.log("window updated");
   },
   methods: {
-    shortenVotes: function (v) {
-      return Math.floor(v/1000) + 'k+'
+    shortenVotes: function(v) {
+      return Math.floor(v / 1000) + "k+";
     },
-    shortenURL: function (link) {
-      return link.substring(link.indexOf('//')+2,40) + "..."
+    shortenURL: function(link) {
+      return link.substring(link.indexOf("//") + 2, 40) + "...";
     },
-    voteUp: function () {
+    voteUp: function() {
       console.log("vote up");
     },
-    voteDown: function () {
+    voteDown: function() {
       console.log("vote down");
     },
-    appendItems: function () {
+    appendItems: function() {
       //load more items
-      console.log('appending items')
+      console.log("appending items");
     },
-    fetchData: function () {
+    fetchData: function() {
       let url = "https://www.reddit.com/.json";
       fetch(url)
         .then(res => res.json())
         .then(res => {
-          let after = res.data.after
+          let after = res.data.after;
           let redditHomeData = res.data.children;
           redditHomeData.forEach(obj => {
-            let post = obj.data            
+            let post = obj.data;
             if (!post.thumbnail.startsWith("http")) {
               post.thumbnail = "../assests/img.jpg";
             }
             post.author = "u/" + post.author;
             post.votes = post.ups - post.downs;
-            post.permalink = "https://www.reddit.com"+post.permalink
+            post.permalink = "https://www.reddit.com" + post.permalink;
             this.posts.push(post);
           });
-          console.log('after:',after)
+          console.log("after:", after);
         });
     }
   },
   watch: {
-    eop: function (v) {
-      console.log('eop changed:', this.eop)
-      this.eop = false
+    eop: function(v) {
+      console.log("eop changed:", this.eop);
+      this.eop = false;
     }
   }
-  
 };
 </script>
 
@@ -164,5 +171,11 @@ a:hover {
 }
 .title {
   font-size: 14px;
+}
+
+.container {
+  display: grid;
+  grid-template: "post-div side-div";
+  padding: 5px;
 }
 </style>
