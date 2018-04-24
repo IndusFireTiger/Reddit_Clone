@@ -1,15 +1,17 @@
 <template lang="html">
-  <div class="comment">  
+  <div id="comment">  
     <!-- <span style="font-size:30px;cursor:pointer">&#9776; open</span> -->
     <div id="mySidenav" class="sidenav">
       <a href="javascript:void(0)" class="closebtn" @click="closeNav()">&times;</a>
-      <p>
-        Hello
-      </p>
+      <div class='post-card'>
+        title
+      </div>
       <div id = 'comments-div'>
-        <div v-for = 'p in comments' v-bind:key = p>
-          <p>{{p}}</p>
-        </div>
+        <!-- <div class='all-comments'> -->
+          <div class='comment' v-for = 'p in comments' v-bind:key = p>
+            <p>{{p}}</p>
+          </div>
+        <!-- </div> -->
       </div>
     </div>
   </div>
@@ -43,20 +45,14 @@ export default {
       console.log('fetching comments from', url)
       fetch(url)
         .then(res => res.json())
-        .then(res => {
-          // res.forEach(thread => {
-          //   let comment = thread.data.children
-          //   let replies = comment.data.replies
-          //   console.log('comment',)
-          // })
-          // console.log('fetched comments', res[1].data.children[0].data.replies.data.children)
+        .then(res => {          
           let coms = res[1].data.children
           coms.forEach(com => {
             let replies = com.data.body
+            // console.log('this',this)
             this.comments.push(replies)         
-          });
-          
-            console.log(this.comments)
+          });          
+            console.log(this.comments.length)
           });
         
     }
@@ -126,4 +122,19 @@ p {
     font-size: 18px;
   }
 }
+#comment {
+  margin: 10px;
+}
+.post-card{
+  height: 100px;
+  margin: 50px 10px 10px 10px ;
+  border: solid black;
+}
+
+.comment {
+  background: white;
+  margin-bottom: 10px;
+  padding: 5px;
+  margin: 10px;
+} 
 </style>
