@@ -1,29 +1,71 @@
 <template lang="html">
-  <div class="comment">   
-    <span style="font-size:30px;cursor:pointer" v-on:click="openNav()">&#9776; open</span>
+  <div class="comment">  
+    <!-- <span style="font-size:30px;cursor:pointer">&#9776; open</span> -->
     <div id="mySidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" v-on:click="closeNav()">&times;</a>
-    </div> 
+      <a href="javascript:void(0)" class="closebtn" @click="closeNav()">&times;</a>
+      <p>
+        Hello
+      </p>
+      <div id = 'comments-div'>
+        <div v-for = 'p in comments' v-bind:key = p>
+          <p>{{p}}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import {bus} from "../main.js";
+
 export default {
   name: "comment",
   data() {
     return {
-      user: "",
-      created: "",
-      content: ""
+      comments: []
     };
   },
   methods: {
-    openNav() {
+    openNav(post_id) {
       document.getElementById("mySidenav").style.width = "73%";
+      this.fetchComments(post_id)
     },
     closeNav() {
       document.getElementById("mySidenav").style.width = "0";
+    },
+    slideComment(eve) {
+      console.log('slide', eve)
+    },
+    fetchComments(post_id){
+      let com = document.getElementById('comments-div')
+      com.innerHTML = ''
+      let url = "https://www.reddit.com/"+post_id+".json";
+      console.log('fetching comments from', url)
+      fetch(url)
+        .then(res => res.json())
+        .then(res => {
+          // res.forEach(thread => {
+          //   let comment = thread.data.children
+          //   let replies = comment.data.replies
+          //   console.log('comment',)
+          // })
+          // console.log('fetched comments', res[1].data.children[0].data.replies.data.children)
+          let coms = res[1].data.children
+          coms.forEach(com => {
+            let replies = com.data.body
+            this.comments.push(replies)         
+          });
+          
+            console.log(this.comments)
+          });
+        
     }
+  },
+  created() {
+    bus.$on('slideComment', (post_id) => { 
+      console.log('slide:', post_id) 
+      this.openNav(post_id)
+    })
   }
 };
 </script>
@@ -44,11 +86,16 @@ p {
   top: 0;
   left: 0;
   /* background-color: white; */
-  background: linear-gradient(to bottom right, white, rgb(93, 250, 250));
-  overflow-x: hidden;
+  background: rgb(179, 252, 252);
+  overflow-x: scroll;
   transition: 0.8s;
   padding-top: 60px;
 }
+
+/* #scroll {
+  direction: ltr;
+} */
+
 
 .sidenav a {
   padding: 8px 8px 8px 32px;

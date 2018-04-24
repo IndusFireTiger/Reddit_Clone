@@ -6,6 +6,7 @@
           <div class='flex-container'>        
             <div class="left-div">
               <div class="vote">
+                <!-- <p v-on:voteAdded="voteDown()">hey</p> -->
                 <a v-on:click="voteUp()" href="#">up</a>
               </div>
               <div v-if="p.votes > 1000" class="vote">
@@ -32,7 +33,9 @@
                   <a :href="p.author">{{p.author}}</a>            
               </div>
               <div class="comment">
-                <a :href="p.permalink">Comment</a>
+                <p v-on:click="commentClicked()">                  
+                  <router-link :to="p.permalink">Comment</router-link>
+                  </p>
                 </div> 
             </div>        
           </div>
@@ -42,10 +45,9 @@
 </template>
 
 <script>
-// import comment from "./Comment";
-// import side from "./side";
 import comment from "./comment";
-
+import {bus} from "../main.js"
+console.log('bus in post', bus)
 export default {
   name: "post",
   components: { comment },
@@ -75,6 +77,7 @@ export default {
     },
     voteUp: function() {
       console.log("vote up");
+      // this.$emit('voteAdded')
     },
     voteDown: function() {
       console.log("vote down");
@@ -95,20 +98,36 @@ export default {
             if (!post.thumbnail.startsWith("http")) {
               post.thumbnail = "../assests/img.jpg";
             }
+            // console.log(post)
             post.author = "u/" + post.author;
             post.votes = post.ups - post.downs;
-            post.permalink = "https://www.reddit.com" + post.permalink;
+            // post.permalink = "https://www.reddit.com" + post.permalink;
             this.posts.push(post);
           });
-          console.log("after:", after);
+          // console.log("after:", after);
         });
+    },
+    commentClicked: function() {
+      console.log("comment clicked")
+      // this.$emit('showComment', 'hey')
+      // bus.$emit('slideComment', 'bablu')
     }
   },
   watch: {
     eop: function(v) {
       console.log("eop changed:", this.eop);
       this.eop = false;
+    },
+    '$route': function(to, from) {
+      // console.log('in post.vue watching $route from to ', from.path, to.path)
+      let arr = to.path.split('/')
+      if(arr[3]=='comments'){
+        console.log('open comment slide')
+        // this.$emit('showComment', to)
+        bus.$emit('slideComment', to.path)
+      }
     }
+  
   }
 };
 </script>

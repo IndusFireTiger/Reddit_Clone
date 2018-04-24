@@ -2,7 +2,7 @@
   <div id="poster">
     <homeMenu></homeMenu>
     <navbar></navbar>
-      <posts></posts>
+    <posts></posts>
   </div>
 </template>
 
@@ -24,7 +24,7 @@ export default {
   },
   watch: {
     '$route': function(from, to) {
-      console.log('watching $route from to ', from.path, to.path)
+      console.log('in app.vue watching $route from to ', from.path, to.path)
     }
   },
   beforeRouteUpdate (to, from, next) {
