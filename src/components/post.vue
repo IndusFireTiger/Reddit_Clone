@@ -33,9 +33,7 @@
                   <a :href="p.author">{{p.author}}</a>            
               </div>
               <div class="comment">
-                <p v-on:click="commentClicked()">                  
                   <router-link :to="p.permalink">Comment</router-link>
-                  </p>
                 </div> 
             </div>        
           </div>
@@ -106,12 +104,10 @@ export default {
           });
           // console.log("after:", after);
         });
-    },
-    commentClicked: function() {
-      console.log("comment clicked")
-      // this.$emit('showComment', 'hey')
-      // bus.$emit('slideComment', 'bablu')
     }
+    // commentClicked: function() {
+    //   console.log("comment clicked")
+    // }
   },
   watch: {
     eop: function(v) {
@@ -119,11 +115,9 @@ export default {
       this.eop = false;
     },
     '$route': function(to, from) {
-      // console.log('in post.vue watching $route from to ', from.path, to.path)
       let arr = to.path.split('/')
       if(arr[3]=='comments'){
         console.log('open comment slide')
-        // this.$emit('showComment', to)
         bus.$emit('slideComment', to.path)
       }
     }

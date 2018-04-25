@@ -4,12 +4,22 @@
     <div id="mySidenav" class="sidenav">
       <a href="javascript:void(0)" class="closebtn" @click="closeNav()">&times;</a>
       <div class='post-card'>
-        title
+        <div>
+          <p>Posted by {{post.author}}</p>
+          <p>{{post.title}}</p>
+          <img v-bind:src="preview" alt="">
+        </div>
       </div>
+      <hr>
       <div id = 'comments-div'>
         <!-- <div class='all-comments'> -->
-          <div class='comment' v-for = 'p in comments' v-bind:key = p>
-            <p>{{p}}</p>
+          <div class='comment' v-for = 'com in comments' v-bind:key = com.id>
+            <div>
+              <p>{{com.author}}</p>
+            </div>
+            <div>
+              <p>{{com.body}}</p>
+            </div>            
           </div>
         <!-- </div> -->
       </div>
@@ -24,6 +34,8 @@ export default {
   name: "comment",
   data() {
     return {
+      post: {},
+      preview: null,
       comments: []
     };
   },
@@ -35,9 +47,6 @@ export default {
     closeNav() {
       document.getElementById("mySidenav").style.width = "0";
     },
-    slideComment(eve) {
-      console.log('slide', eve)
-    },
     fetchComments(post_id){
       let com = document.getElementById('comments-div')
       com.innerHTML = ''
@@ -45,12 +54,16 @@ export default {
       console.log('fetching comments from', url)
       fetch(url)
         .then(res => res.json())
-        .then(res => {          
+        .then(res => {     
+          this.post = res[0].data.children[0].data
+          this.preview = this.post.preview.images[0].source.url
+          // img_src.forEach(src => {
+
+          // })
+          console.log("preview ",this.preview)  
           let coms = res[1].data.children
           coms.forEach(com => {
-            let replies = com.data.body
-            // console.log('this',this)
-            this.comments.push(replies)         
+            this.comments.push(com.data)        
           });          
             console.log(this.comments.length)
           });
@@ -78,7 +91,7 @@ p {
   height: 100%;
   width: 0;
   position: fixed;
-  z-index: 1;
+  /* z-index: 1; */
   top: 0;
   left: 0;
   /* background-color: white; */
@@ -88,7 +101,8 @@ p {
   padding-top: 60px;
 }
 
-/* #scroll {
+/* todo */
+/* #scroll { 
   direction: ltr;
 } */
 
@@ -126,11 +140,15 @@ p {
   margin: 10px;
 }
 .post-card{
-  height: 100px;
+  height: 200px;
   margin: 50px 10px 10px 10px ;
-  border: solid black;
+  /* border: solid black; */
 }
 
+.post-card img{
+  width: 50%;
+  height: auto;
+}
 .comment {
   background: white;
   margin-bottom: 10px;
