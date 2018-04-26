@@ -1,14 +1,20 @@
 <template>
   <div id = "side">
     <div>
-      <div v-for = 'op in options' :key="op" class='side-sub-div'>{{op}}</div>
+      <focus class='side-sub-div'>card focused post</focus>
+      <div class='side-sub-div'>create post</div>
+      <div class='side-sub-div'>trending</div>
+      <div class='side-sub-div'>about</div>
     </div>
   </div>
 </template>
 
 <script>
+import focus from './focusedCard'
+
 export default {
   name: "side",
+  components: {focus},
   data() {
     return {
       options: ['card focused post', 'create post', 'trending r/', 'about']

@@ -1,11 +1,15 @@
 <template>
   <div id="navbar">
+    <!-- <ul>
+      <li> -->
       <div class="menu" v-on:click="subredMenu"> Subreddit
           <div class="menu-content">
           <!-- <a v-for="category in subreddits" :key="category" :href="category.toLowerCase()">{{category}}</a> -->
-          <router-link v-for="cat in subreddits" :key="cat" :to="cat">{{cat}}</router-link>
+          <router-link v-for="cat in subreddits" :key="cat" :to="cat.toLowerCase()">{{cat}}</router-link>
           </div>   
       </div>
+      <!-- </li>
+    </ul> -->
       <div class="search">
         <input type="text" placeholder="Search">
       </div>    
@@ -13,18 +17,38 @@
 </template>
 
 <script>
+import {bus} from '../main.js'
 export default {
   name: "navbar",
   data(){
       return {
           options: ['mode','subreddits', 'search'],
-          subreddits:['Hot','New','Controvercial','Top','Rising']
+          subreddits:['Hot','New','Top','Rising', 'Popular']
       }
   },
   methods: {
     subredMenu: function () {
       console.log('clicked')
-      console.log('this.$route',this.$route)
+      // document.getElementsByClassName('menu-content')[0].style.display = 'none'
+      // console.log(document.getElementsByClassName('menu-content')[0].style.display)
+    }
+  },
+  watch: {
+    '$route': function(to, from) {
+      console.log('in navbar.vue watching $route from to ', from.path, to.path)
+      let arr = to.path.split('/')
+      this.subreddits.forEach((sub) => {
+        if(arr[1] === sub.toLowerCase()){
+          let path = to.path
+          if(arr[1] == 'popular'){
+            path = null
+          }
+          console.log('sub', sub)
+          bus.$emit('subreddit', path)
+          return
+        }
+      })
+      // if(arr[1] === 'hot')
     }
   }
 }
@@ -75,9 +99,10 @@ input:focus{
 .menu:hover {
   display: block;
   cursor: pointer;
+  background: yellow;
 }
 .menu a {
-  background-color: rgb(93, 250, 250);
+  /* background-color: rgb(93, 250, 250); */
   color: black;
   display: block;
   padding: 12px;
@@ -88,27 +113,28 @@ input:focus{
   background-color: white;
   cursor: pointer;
 }
-
+.hidden {  
+}
 .menu-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    /* background-color:  rgb(93, 250, 250); */
+    background-color:  white;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    z-index: 5;
 }
 
 .menu-content a {
-    float: none;
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
+    /* float: none;
+    text-align: left; */
+    font-size: 15px;
 }
 
 .menu-content a:hover {
-    background-color: #ddd;
+    color: initial;
+    /* background-color: white(191, 243, 250); */
+    background-color: rgb(93, 250, 250);
 }
 
 .menu:hover .menu-content {

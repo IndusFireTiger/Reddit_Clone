@@ -2,12 +2,12 @@
   <div id="post">
     <comment></comment>
     <div>
-      <div class = post v-for = 'p in posts' v-bind:key = p.id> 
+      <div class=post v-for='p in posts' v-bind:key='p.votes' v-on:click='postSelected' :id='p.id'>  
           <div class='flex-container'>        
             <div class="left-div">
               <div class="vote">
                 <!-- <p v-on:voteAdded="voteDown()">hey</p> -->
-                <a v-on:click="voteUp()" href="#">up</a>
+                <a v-on:click="voteUp()" href="#">+</a>
               </div>
               <div v-if="p.votes > 1000" class="vote">
                 <p> {{shortenVotes(p.votes)}}</p>
@@ -16,7 +16,7 @@
                 <p> {{p.votes}}</p>
               </div>
               <div class="vote">
-                <a v-on:click="voteDown()" href="#">down</a>
+                <a v-on:click="voteDown()" href="#">-</a>
               </div>
             </div>
             <div>
@@ -24,7 +24,7 @@
             </div>
             <div class="right-div">
               <div>
-                <a class="title" :href="p.permalink">{{p.title}}</a>
+                <router-link class="title" :to="p.permalink">{{p.title}}</router-link>
                 <a :href="p.url">{{shortenURL(p.url)}}</a>            
               </div>
               <div class="link">            
@@ -65,8 +65,17 @@ export default {
     this.fetchData();
     window.onscroll = this.onscroll;
     console.log("window updated");
+    bus.$on('subreddit', (to) =>{
+      console.log('subreddit category selected', to)
+      this.posts = []
+      this.fetchData(to)
+    })
   },
   methods: {
+    postSelected: function(e){
+      console.log('postSelected')
+      bus.$emit('focused', this.post)
+    },
     shortenVotes: function(v) {
       return Math.floor(v / 1000) + "k+";
     },
@@ -84,8 +93,10 @@ export default {
       //load more items
       console.log("appending items");
     },
-    fetchData: function() {
-      let url = "https://www.reddit.com/.json";
+    fetchData: function(url) {
+      url = url? 'https://www.reddit.com'+url+'/.json' : "https://www.reddit.com/.json"
+      console.log('url',url)
+      // url = url || "https://www.reddit.com/.json";
       fetch(url)
         .then(res => res.json())
         .then(res => {
@@ -96,12 +107,12 @@ export default {
             if (!post.thumbnail.startsWith("http")) {
               post.thumbnail = "../assests/img.jpg";
             }
-            // console.log(post)
             post.author = "u/" + post.author;
             post.votes = post.ups - post.downs;
             // post.permalink = "https://www.reddit.com" + post.permalink;
             this.posts.push(post);
           });
+            console.log(this.posts)
           // console.log("after:", after);
         });
     }
@@ -130,6 +141,7 @@ export default {
 .post:hover {
   background: linear-gradient(to bottom right, white, rgb(193, 245, 252));
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 .post * {
   margin: 0;
@@ -146,6 +158,7 @@ export default {
   border-radius: 7%;
   box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);
   padding: 0;
+  margin-right: 5px;
 }
 #thumbnail:hover {
   box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.3);
@@ -160,6 +173,7 @@ export default {
 }
 .left-div {
   float: left;
+  min-width: 50px;
 }
 p {
   margin: 0;
@@ -187,5 +201,15 @@ a:hover {
   display: grid;
   grid-template: "post-div side-div";
   padding: 5px;
+}
+.vote a{
+  font-size: 15pt;
+}
+.vote a:hover{  
+  font-weight: bolder;
+}
+.right-div a{
+  padding: 0;
+  /* margin: 5px; */
 }
 </style>
