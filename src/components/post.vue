@@ -1,8 +1,8 @@
 <template>
   <div id="post">
-    <router-view></router-view>
+    <comment></comment>
     <div>
-      <div class=post v-for='p in posts' v-bind:key='p.votes' :id='p.id'>  
+      <div class=post v-for='p in posts' v-bind:key='p.votes' v-on:click='postSelected' :id='p.id'>  
         <!-- <hr> -->
           <div class='flex-container'>        
             <div class="left-div">

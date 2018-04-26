@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import comment from '../components/comment'
-import posts from '../components/posts'
+import post from '../components/post'
 // import create from '../components/create'
 // import user from '../components/user'
 
@@ -10,11 +10,11 @@ Vue.use(Router)
 const routes = [
   { path: '/',
     name: 'home',
-    component: posts
+    component: post
   },
   { path: '/:cat_id',
-    name: 'home',
-    component: posts
+    name: 'home'
+    // component: posts
   },
   {
     path: '/r/:subred_id',
