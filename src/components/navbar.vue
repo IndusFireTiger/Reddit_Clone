@@ -56,9 +56,9 @@ export default {
 
 <style>
 #navbar {
-  height: 20px;
+  height: 50px;
   text-align: center;
-  padding: 10px;
+  /* padding: 10px; */
   background-color: #00BCD4
 ;
 }
@@ -91,15 +91,17 @@ input:focus{
   outline:none; 
 }
 .menu {
-    width: 100px;
+    /* width: 100px; */
     text-align: left;
     /* display: none; */
     float: left;
+    margin-left:12px;
+    padding: 15px;
 }
 .menu:hover {
   display: block;
   cursor: pointer;
-  background: yellow;
+  background: cyan;
 }
 .menu a {
   /* background-color: rgb(93, 250, 250); */
@@ -122,7 +124,9 @@ input:focus{
     background-color:  white;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 5;
+    /* z-index: 8; */
+    left: 12px;
+    top: 100px;
 }
 
 .menu-content a {

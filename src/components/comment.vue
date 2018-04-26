@@ -169,6 +169,7 @@ p {
   grid-template: "title-div post-card-image";
 }
 .post-card img{
+  float: right;
   width: auto;
   height: 300px;
   border-radius: 7%;

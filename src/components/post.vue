@@ -2,7 +2,7 @@
   <div id="post">
     <comment></comment>
     <div>
-      <div class=post v-for='p in posts' v-bind:key='p.votes' v-on:click='postSelected' :id='p.id'>  
+      <div class=post v-for='(p, i) in posts' v-bind:key='p.votes' v-on:click='postSelected' :id='i'>  
         <!-- <hr> -->
           <div class='flex-container'>        
             <div class="left-div">
