@@ -1,8 +1,9 @@
 <template>
   <div id="post">
-    <comment></comment>
+    <router-view></router-view>
     <div>
-      <div class=post v-for='p in posts' v-bind:key='p.votes' v-on:click='postSelected' :id='p.id'>  
+      <div class=post v-for='p in posts' v-bind:key='p.votes' :id='p.id'>  
+        <!-- <hr> -->
           <div class='flex-container'>        
             <div class="left-div">
               <div class="vote">
@@ -20,7 +21,7 @@
               </div>
             </div>
             <div>
-              <img id="thumbnail" v-bind:src="p.thumbnail" alt="">
+              <img id="thumbnail" v-bind:src="p.thumbnail" alt="" v-on:click='postSelected'>
             </div>
             <div class="right-div">
               <div>
@@ -73,8 +74,8 @@ export default {
   },
   methods: {
     postSelected: function(e){
-      console.log('postSelected')
-      bus.$emit('focused', this.post)
+      console.log('postSelected', e.path[0].src)
+      bus.$emit('focused',  e.path[0].src)
     },
     shortenVotes: function(v) {
       return Math.floor(v / 1000) + "k+";
@@ -109,6 +110,7 @@ export default {
             }
             post.author = "u/" + post.author;
             post.votes = post.ups - post.downs;
+            console.log('subreddit',post.subreddit_id)
             // post.permalink = "https://www.reddit.com" + post.permalink;
             this.posts.push(post);
           });
@@ -181,16 +183,16 @@ p {
   font-size: 14px;
 }
 a {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: normal;
-  color: initial;
+  color: rgb(43, 114, 247);
   text-decoration: none;
 }
 a:hover {
   color: rgb(0, 119, 255);
 }
 .by {
-  font-size: 12px;
+  font-size: 11px;
   padding: 0;
 }
 .title {

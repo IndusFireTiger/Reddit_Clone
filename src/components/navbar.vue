@@ -132,7 +132,7 @@ input:focus{
 }
 
 .menu-content a:hover {
-    color: initial;
+    /* color: initial; */
     /* background-color: white(191, 243, 250); */
     background-color: rgb(93, 250, 250);
 }

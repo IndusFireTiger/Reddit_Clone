@@ -2,7 +2,8 @@
   <div id="poster">
     <homeMenu></homeMenu>
     <navbar></navbar>
-    <posts></posts>
+    <!-- <posts></posts> -->
+    <router-view></router-view>
   </div>
 </template>
 

@@ -123,7 +123,7 @@ p {
 a {
   font-size: 12px;
   font-weight: normal;
-  color: initial;
+  /* color: initial; */
   text-decoration: none;
 }
 a:hover {
@@ -135,6 +135,7 @@ a:hover {
 }
 .title {
   font-size: 14px;
+  color:initial;
 }
 
 .container {
