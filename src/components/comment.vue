@@ -1,8 +1,7 @@
 <template lang="html">
-  <div id="comment">  
-    <!-- <span style="font-size:30px;cursor:pointer">&#9776; open</span> -->
+  <div id="comment">
     <div id="mySidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" @click="closeNav()">&times;</a>
+      <a class="closebtn" @click="closeNav()">&times;</a>
       <div class='post-card-container'>
         <div class='post-card'>
           <div class='title-div'>
@@ -14,25 +13,21 @@
           </div>
         </div>
       </div>
-      <!-- <hr> -->
       <div id = 'comments-div'>
-        <!-- <div class='all-comments'> -->
-          <div class='comment' v-for = 'com in comments' v-bind:key = com.id>
+          <div class='comment' v-for = '(com, i) in comments' v-bind:key= com.id :id='i'>
             <div>
               <p>{{com.author}}</p>
-              <p>{{com.depth}}</p>
             </div>
             <div>
               <p>{{com.body}}</p>
             </div>
             <div v-if="com.replies != undefined">
-                <p>has replies</p>
+                <button @click='showReplies(com, i)'>Show Replies</button>
             </div>
             <div v-else>
               <p>no replies</p>
             </div>            
           </div>
-        <!-- </div> -->
       </div>
     </div>
   </div>
@@ -52,11 +47,12 @@ export default {
     };
   },
   methods: {
+    showReplies(post, i) {
+      console.log('showing replies', i, post)
+    },
     openNav(post_id) {
-      // this.changed = true
       document.getElementById("mySidenav").style.width = "73%";
       this.fetchComments(post_id)
-      // this.changed = false
     },
     closeNav() {
       document.getElementById("mySidenav").style.width = "0";
@@ -77,9 +73,6 @@ export default {
       let coms = res[1].data.children
       coms.forEach(com => {
         this.comments.push(com.data)
-        // if(com.data.replies) {
-          
-        // }      
       });    
     }
   },
@@ -110,20 +103,13 @@ p {
   height: 100%;
   width: 0;
   position: fixed;
-  /* z-index: 1; */
-  top: 90px;
+  top: 100px;
   right: 0;
-  /* background-color: white; */
   background: rgb(179, 252, 252);
   overflow-x: scroll;
   transition: 0.8s;
   padding-top: 5px;
 }
-
-/* todo */
-/* #scroll { 
-  direction: ltr;
-} */
 
 .sidenav a {
   padding: 8px 8px 8px 32px;
@@ -156,9 +142,7 @@ p {
   margin: 10px;
 }
 .post-card-container{
-  /* height: 200px; */
   margin: 50px 10px 10px 10px ;
-  /* border: solid black; */
 }
 .post-card {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.5);
@@ -174,10 +158,6 @@ p {
   height: 300px;
   border-radius: 7%;
   box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);
-  /* padding: 0; */
-  /* margin-top: 20px; */
-  /* margin-left: auto;
-  margin-right: auto; */
 }
 .comment {
   background: white;
@@ -185,14 +165,12 @@ p {
   padding: 5px;
   margin: 10px;
 }
-/* .title {
-  float: left;
-} */
 .post-card-img{
  float: right;
 }
 
 .title{
   font-size: 15pt;
+  margin-right: 5px;
 }
 </style>

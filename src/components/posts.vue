@@ -19,11 +19,10 @@ export default {
   data() {
     return {
       posts: [],
-      eop: 0,
       onscroll: function(ev) {
+        console.log('scrolling')
         if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-          this.eop = 1;
-          console.log("EOP reached", this.eop);
+          console.log("EOP reached");
         }
       }
     };
@@ -59,9 +58,9 @@ export default {
           let redditHomeData = res.data.children;
           redditHomeData.forEach(obj => {
             let post = obj.data;
-            if (!post.thumbnail.startsWith("http")) {
-              post.thumbnail = "../assests/img.jpg";
-            }
+            // if (!post.thumbnail.startsWith("http")) {
+            //   post.thumbnail = "../assests/img.jpg";
+            // }
             post.author = "u/" + post.author;
             post.votes = post.ups - post.downs;
             post.permalink = "https://www.reddit.com" + post.permalink;

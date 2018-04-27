@@ -3,11 +3,9 @@
     <comment></comment>
     <div>
       <div class=post v-for='(p, i) in posts' v-bind:key='p.votes' v-on:click='postSelected' :id='i'>  
-        <!-- <hr> -->
           <div class='flex-container'>        
             <div class="left-div">
               <div class="vote">
-                <!-- <p v-on:voteAdded="voteDown()">hey</p> -->
                 <a v-on:click="voteUp()" href="#">+</a>
               </div>
               <div v-if="p.votes > 1000" class="vote">
@@ -52,30 +50,45 @@ export default {
   components: { comment },
   data() {
     return {
+      url: '',
+      fetching: false,
+      after: null,
       posts: [],
-      eop: 0,
-      onscroll: function(ev) {
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-          this.eop = 1;
-          console.log("EOP reached", this.eop);
+      onscroll: function() {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight-50) {
+          if(!this.fetching) {
+            this.fetching = true
+            bus.$emit('more', null)  
+          }        
         }
       }
     };
   },
-  created: function() {
+  created: function() {  
+    this.url = 'https://www.reddit.com/.json'
     this.fetchData();
     window.onscroll = this.onscroll;
-    console.log("window updated");
+    bus.$on('more', (to) =>{
+      this.appendItems()
+    })
     bus.$on('subreddit', (to) =>{
-      console.log('subreddit category selected', to)
       this.posts = []
+      this.url = 'https://www.reddit.com'+ to + '.json'
       this.fetchData(to)
     })
   },
   methods: {
     postSelected: function(e){
-      console.log('postSelected', e.path[0].src)
-      bus.$emit('focused',  e.path[0].src)
+      console.log('postSelected', e.path)
+      let id;
+      e.path.forEach(p => {
+        if(p.className == 'post'){
+          id = p.id
+        }
+      })
+      
+          console.log(this.posts[id])
+          bus.$emit('focused', this.posts[id].preview.images[0].source.url )
     },
     shortenVotes: function(v) {
       return Math.floor(v / 1000) + "k+";
@@ -90,51 +103,45 @@ export default {
     voteDown: function() {
       console.log("vote down");
     },
-    appendItems: function() {
-      //load more items
-      console.log("appending items");
-    },
     fetchData: function(url) {
-      url = url? 'https://www.reddit.com'+url+'/.json' : "https://www.reddit.com/.json"
-      console.log('url',url)
-      // url = url || "https://www.reddit.com/.json";
-      fetch(url)
+      fetch(this.url)
         .then(res => res.json())
         .then(res => {
-          let after = res.data.after;
+          this.after = res.data.after;
           let redditHomeData = res.data.children;
           redditHomeData.forEach(obj => {
             let post = obj.data;
-            if (!post.thumbnail.startsWith("http")) {
-              post.thumbnail = "../assests/img.jpg";
-            }
             post.author = "u/" + post.author;
             post.votes = post.ups - post.downs;
-            console.log('subreddit',post.subreddit_id)
-            // post.permalink = "https://www.reddit.com" + post.permalink;
             this.posts.push(post);
           });
-            console.log(this.posts)
-          // console.log("after:", after);
+        });
+    },
+    appendItems: function() {
+      let url = this.url + '?limit=2&after=' + this.after
+      if(url.startsWith('http'))
+      fetch(url)
+        .then(res => res.json())
+        .then(res => {
+          this.after = res.data.after;
+          let redditHomeData = res.data.children;
+          redditHomeData.forEach(obj => {
+            let post = obj.data;
+            post.author = "u/" + post.author;
+            post.votes = post.ups - post.downs;
+            this.posts.push(post);
+          });
+            window.fetching = false
         });
     }
-    // commentClicked: function() {
-    //   console.log("comment clicked")
-    // }
   },
   watch: {
-    eop: function(v) {
-      console.log("eop changed:", this.eop);
-      this.eop = false;
-    },
     '$route': function(to, from) {
       let arr = to.path.split('/')
       if(arr[3]=='comments'){
-        console.log('open comment slide')
         bus.$emit('slideComment', to.path)
       }
     }
-  
   }
 };
 </script>

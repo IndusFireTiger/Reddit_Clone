@@ -9,10 +9,9 @@
 <script>
 export default {
   name: "homeMenu",
-  // prop: [data],
   data() {
     return {
-      options: ["logo", "readit", "login", "signup"]
+      options: ["logo", "reddit-clone", "login", "signup"]
     };
   }
 };
@@ -23,13 +22,12 @@ export default {
   height: 30px;
   text-align: center;
   padding: 10px;
-  /* background-color: rgb(93, 250, 250); */
   background-color: white;
 }
 .grid-container {
   display: grid;
   grid-template:
-    ". . . . . .";
+    ". . . .";
 }
 </style>
 

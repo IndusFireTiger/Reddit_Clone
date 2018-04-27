@@ -1,17 +1,13 @@
 <template>
   <div id="navbar">
-    <!-- <ul>
-      <li> -->
       <div class="menu" v-on:click="subredMenu"> Subreddit
           <div class="menu-content">
-          <!-- <a v-for="category in subreddits" :key="category" :href="category.toLowerCase()">{{category}}</a> -->
           <router-link v-for="cat in subreddits" :key="cat" :to="cat.toLowerCase()">{{cat}}</router-link>
           </div>   
       </div>
-      <!-- </li>
-    </ul> -->
       <div class="search">
-        <input type="text" placeholder="Search">
+        <input type="text" placeholder="Search" v-model="lookup">
+        <button class='btn' v-on:click="search">Look Up</button>
       </div>    
   </div>
 </template>
@@ -23,14 +19,16 @@ export default {
   data(){
       return {
           options: ['mode','subreddits', 'search'],
-          subreddits:['Hot','New','Top','Rising', 'Popular']
+          subreddits:['Hot','New','Top','Rising', 'Popular'],
+          lookup: ''
       }
   },
   methods: {
     subredMenu: function () {
       console.log('clicked')
-      // document.getElementsByClassName('menu-content')[0].style.display = 'none'
-      // console.log(document.getElementsByClassName('menu-content')[0].style.display)
+    }, 
+    search: function () {      
+      console.log('search', this.lookup)
     }
   },
   watch: {
@@ -43,12 +41,10 @@ export default {
           if(arr[1] == 'popular'){
             path = null
           }
-          console.log('sub', sub)
           bus.$emit('subreddit', path)
           return
         }
       })
-      // if(arr[1] === 'hot')
     }
   }
 }
@@ -56,11 +52,10 @@ export default {
 
 <style>
 #navbar {
-  height: 50px;
+  height: 49px;
   text-align: center;
   /* padding: 10px; */
-  background-color: #00BCD4
-;
+  background-color: #00BCD4;
 }
 .subreddits{
   float: left;
@@ -70,30 +65,27 @@ export default {
   height: 40px;
   width: 200px;
   font-size: 14px; 
-  /* position: absolute; */
 }
-/* .subreddits:hover{
-  background: white;
-} */
 .search{
   float: right;
   color: white;
-  /* position: relative; */
+  padding: 10px;
+  margin-right: 6px;
 }
 .search input{
+  font-size: 14px;
+  width: 200px;
   border:none;
   border-bottom:1px solid #757575;
   cursor: none;
   cursor: pointer;
-  padding: 5px 5px 0px 5px;
+  padding: 5px;
 }
 input:focus{
   outline:none; 
 }
 .menu {
-    /* width: 100px; */
     text-align: left;
-    /* display: none; */
     float: left;
     margin-left:12px;
     padding: 15px;
@@ -104,7 +96,6 @@ input:focus{
   background: cyan;
 }
 .menu a {
-  /* background-color: rgb(93, 250, 250); */
   color: black;
   display: block;
   padding: 12px;
@@ -115,34 +106,36 @@ input:focus{
   background-color: white;
   cursor: pointer;
 }
-.hidden {  
-}
+
 .menu-content {
     display: none;
     position: absolute;
-    /* background-color:  rgb(93, 250, 250); */
     background-color:  white;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    /* z-index: 8; */
     left: 12px;
-    top: 100px;
+    top: 98px;
 }
 
 .menu-content a {
-    /* float: none;
-    text-align: left; */
     font-size: 15px;
 }
 
 .menu-content a:hover {
-    /* color: initial; */
-    /* background-color: white(191, 243, 250); */
     background-color: rgb(93, 250, 250);
 }
 
 .menu:hover .menu-content {
     display: block;
+}
+
+.btn {
+  font-size: 14px;
+  padding: 3px;
+  background-color: rgb(248, 249, 250);
+  border: groove; 
+  margin-left: 10px;
+  width: 90px; 
 }
 </style>
 

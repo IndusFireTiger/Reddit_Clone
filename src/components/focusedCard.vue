@@ -1,6 +1,6 @@
 <template>
   <div id = 'focus'>
-    <img :src="img_src" alt="">
+    <img class='img_focused' :src="img_src" alt="">
   </div>
 </template>
 
@@ -27,5 +27,8 @@ export default {
 </script>
 
 <style>
-
+.img_focused{
+  height: 300px;
+  width: 300px;
+}
 </style>
